@@ -9,10 +9,6 @@
 namespace TG\Rules;
 
 
-use TG\Attribute\Exact;
-use TG\Attribute\Range;
-use TG\AttributeSet;
-
 class Test extends Generic
 {
 
