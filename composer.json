@@ -8,16 +8,10 @@
         }
     ],
     "require": {},
-    "require-dev": {
-        "behat/behat": "^3.0",
-        "phpunit/phpunit": "^4.7"
-    },
+    "require-dev": {},
     "autoload": {
         "psr-4": {
             "TG\\": "src/"
         }
-    },
-    "config": {
-        "bin-dir": "bin/"
     }
 }
