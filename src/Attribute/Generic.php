@@ -8,21 +8,129 @@
 
 namespace TG\Attribute;
 
+use TG\AttributeSet;
 
 class Generic
 {
     protected $name;
     protected $value;
+    protected $attributeSet;
+    protected $dependencies;
+    protected $callback;
+
+    protected $validationEnabled = true;
 
     /**
-     * Generic constructor.
      * @param $name
      * @param $value
+     * @return static
      */
-    public function __construct($name, $value)
+    public static function create($name, $value = null)
     {
-        $this->setName($name);
-        $this->setValue($value);
+        $attribute = new static;
+        $attribute->setName($name);
+
+        if (!is_null($value)) {
+            $attribute->setValue($value);
+        }
+
+        return $attribute;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInitialized()
+    {
+        return !is_null($this->value);
+    }
+
+    /**
+     * @return bool
+     */
+    public function haveDependencies()
+    {
+        return !empty($this->getDependencies());
+    }
+
+    /**
+     * @param ...$dependencies
+     * @return $this
+     */
+    public function on(...$dependencies)
+    {
+        $this->setDependencies($dependencies);
+
+        return $this;
+    }
+
+    /**
+     * @param $callback
+     * @return $this
+     */
+    public function trigger($callback)
+    {
+        $this->setCallback($callback);
+
+        return $this;
+    }
+
+    public function dependenciesChanged(...$dependencies)
+    {
+        $validationStatus = $this->validationEnabled;
+        $this->validationEnabled = false;
+
+        call_user_func_array($this->getCallback(), $dependencies[0]);
+
+        $this->validationEnabled = $validationStatus;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCallback()
+    {
+        return $this->callback;
+    }
+
+    /**
+     * @param mixed $callback
+     */
+    public function setCallback($callback)
+    {
+        $this->callback = $callback->bindTo($this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDependencies()
+    {
+        return $this->dependencies;
+    }
+
+    /**
+     * @param mixed $dependencies
+     */
+    public function setDependencies($dependencies)
+    {
+        $this->dependencies = $dependencies;
+    }
+
+    /**
+     * @param AttributeSet $attributeSet
+     */
+    public function setAttributeSet(AttributeSet $attributeSet)
+    {
+        $this->attributeSet = $attributeSet;
+    }
+
+    /**
+     * @return AttributeSet
+     */
+    public function getAttributeSet()
+    {
+        return $this->attributeSet;
     }
 
     /**
@@ -55,11 +163,15 @@ class Generic
      */
     public function setValue($value)
     {
-        if (!$this->isValueValid($value)) {
+        if ($this->validationEnabled && !$this->isValueValid($value)) {
             $this->throwInvalidValueException($value);
         }
 
         $this->value = $value;
+
+        if ($this->isInitialized() && $this->getAttributeSet()) {
+            $this->getAttributeSet()->attributeChanged($this);
+        }
     }
 
     /**
