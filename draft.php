@@ -4,11 +4,11 @@ use TG;
 
 $rules = new Rules\Fuzion(); // extends Rules\Generic
 
-// сеттинг
+// СЃРµС‚С‚РёРЅРі
 
 $setting = $rules->isGeneric() ? new Setting\Cyberpunk() : $rules->getSetting(); // extends Setting\Generic
 
-// ограничения персонажей
+// РѕРіСЂР°РЅРёС‡РµРЅРёСЏ РїРµСЂСЃРѕРЅР°Р¶РµР№
 
 $restrictions = new Setting\Generic\Restrictions\Character(); // npc?
 $restrictions
@@ -16,20 +16,20 @@ $restrictions
     ->gender('male')
     ->maxLimbCount(6);
 
-// или так
+// РёР»Рё С‚Р°Рє
 
 $restrictions = $setting->getRestrictions(); // Setting\Cyberpunk\Restrictions
 
-// генерируем лист персонажа
+// РіРµРЅРµСЂРёСЂСѓРµРј Р»РёСЃС‚ РїРµСЂСЃРѕРЅР°Р¶Р°
 
 $characterGenerator = new Generator\Character();
 $character = $characterGenerator->generate($restrictions);
 
-// генерируем текстовое описание
+// РіРµРЅРµСЂРёСЂСѓРµРј С‚РµРєСЃС‚РѕРІРѕРµ РѕРїРёСЃР°РЅРёРµ
 
 $descriptionGenerator = new Generator\CharacterDescription();
 $description = $descriptionGenerator->generate($setting);
 
 /**
- * - генератор описания (сеттинг) должен знать обо всех возможных характеристиках? это связывает сеттинг с правилами
+ * - РіРµРЅРµСЂР°С‚РѕСЂ РѕРїРёСЃР°РЅРёСЏ (СЃРµС‚С‚РёРЅРі) РґРѕР»Р¶РµРЅ Р·РЅР°С‚СЊ РѕР±Рѕ РІСЃРµС… РІРѕР·РјРѕР¶РЅС‹С… С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєР°С…? СЌС‚Рѕ СЃРІСЏР·С‹РІР°РµС‚ СЃРµС‚С‚РёРЅРі СЃ РїСЂР°РІРёР»Р°РјРё
  */

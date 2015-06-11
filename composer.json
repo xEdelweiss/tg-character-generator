@@ -9,7 +9,6 @@
     ],
     "require": {},
     "require-dev": {
-        "behat/behat": "^3.0",
         "phpunit/phpunit": "^4.7"
     },
     "autoload": {
