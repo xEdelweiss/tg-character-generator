@@ -16,6 +16,11 @@
             "TG\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "TG\\Tests\\": "tests/unit/"
+        }
+    },
     "config": {
         "bin-dir": "bin/"
     }
