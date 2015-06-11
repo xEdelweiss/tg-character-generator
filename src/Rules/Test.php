@@ -15,18 +15,5 @@ use TG\AttributeSet;
 
 class Test extends Generic
 {
-    public function getCharacterAttributeSet(){
-        $set = new AttributeSet();
 
-        (new Range('int', 1, 10))->setAttributeSet($set);
-
-        $set->addAttribute(new Range('int', 1, 10));
-        $set->addAttribute(new Range('ref', 1, 10));
-
-        $set->addAttribute(new Auto('luck'))
-            ->listen('int', 'ref')
-            ->run(function($int, $ref) {
-                $this->setValue($int + $ref);
-            });
-    }
 }
